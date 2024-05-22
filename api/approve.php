@@ -1,9 +1,6 @@
 <?php
 include 'db.php';
 include 'utils.php';
-include 'session.php';
-
-checkSession();
 
 header('X-Frame-Options: DENY');
 header('X-XSS-Protection: 1; mode=block');
@@ -13,7 +10,7 @@ header('X-Robots-Tag: noindex, nofollow', true);
 
 function verifyApiKey($apiKey) {
     $validApiKey = getenv('APIKEY');
-    return $apiKey === $validApiKey;
+    return hash_equals($validApiKey, $apiKey);
 }
 
 function validateToken() {
@@ -28,15 +25,34 @@ function validateToken() {
     return false;
 }
 
+function userIdExists($db, $userId) {
+    $query = "SELECT id FROM users WHERE id = :id";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
+}
+
+function isUserApproved($db, $userId) {
+    $query = "SELECT approval_status FROM users WHERE id = :id";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result && $result['approval_status'] == 1;
+}
+
 if (!validateToken()) {
     sendResponse(401, "Unauthorized");
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
 
-    if (!validateInput($input, ['user_id'])) {
+    if (!validateInput($input, ['user_id']) || !is_numeric($input['user_id'])) {
         sendResponse(400, "Invalid input.");
+        exit();
     }
 
     $userId = intval($input['user_id']);
@@ -45,9 +61,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $database = new Database();
         $db = $database->getConnection();
 
+        if (!userIdExists($db, $userId)) {
+            sendResponse(404, "User not found.");
+            exit();
+        }
+
+        if (isUserApproved($db, $userId)) {
+            sendResponse(400, "User is already approved.");
+            exit();
+        }
+
         $query = "UPDATE users SET approval_status = 1 WHERE id = :id";
         $stmt = $db->prepare($query);
-        $stmt->bindParam(':id', $userId);
+        $stmt->bindParam(':id', $userId, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
             sendResponse(200, "User approved.");
