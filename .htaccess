@@ -1,0 +1,49 @@
+RewriteEngine on
+RewriteRule (^\.|/\.) - [F]
+
+options -Indexes
+
+<Files .htaccess>
+order allow,deny
+Deny from all
+</Files>
+
+<Files .env>
+order allow,deny
+Deny from all
+</Files>
+
+RewriteEngine On
+
+# Redirect to / when no query parameters are present
+RewriteCond %{QUERY_STRING} ^$
+RewriteRule ^index\.php$ / [R=301,L]
+
+# Rewrite URL to pass username as query parameter, excluding requests for index.php
+RewriteCond %{REQUEST_URI} !^/index\.php$
+RewriteRule ^([a-zA-Z0-9_-]+)$ /index.php?username=$1 [L]
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{QUERY_STRING} (\%27)|(\')|(\-\-)|(\%23)|(#) [NC,OR]
+RewriteCond %{QUERY_STRING} (\%22)|(\")|(\;)|(\%7C) [NC,OR]
+RewriteCond %{QUERY_STRING} (\%5C)|(\%2F)|(\.\.\.)|(\%5C0) [NC,OR]
+RewriteCond %{QUERY_STRING} (union.*select.*\() [NC,OR]
+RewriteCond %{QUERY_STRING} (union.*select.*from) [NC,OR]
+RewriteCond %{QUERY_STRING} (select.*from.*where) [NC]
+RewriteRule .* - [F,L]
+</IfModule>
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C).*iframe.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C).*embed.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C).*object.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C).*applet.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C).*style.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C).*form.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C).*img.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (javascript:|vbscript:|data:|onload=|onerror=) [NC]
+RewriteRule .* - [F,L]
+</IfModule>

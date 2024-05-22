@@ -1,0 +1,82 @@
+html, body {
+    background-color: #FDA7DF;
+    padding-bottom: 20px;
+    font-family: "Catamaran", sans-serif;
+    font-weight: 600;
+    line-height: 1.6;
+    word-wrap: break-word;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-font-smoothing: antialiased !important;
+    text-rendering: optimizeLegibility !important;
+}
+
+.card {
+    border-radius: 10px;
+    font-family: "Catamaran", sans-serif;
+}
+#quote-container {
+    margin: 10px auto;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #fff;
+    font-family: "Catamaran", sans-serif;
+}
+#quote {
+    font-family: "Catamaran", sans-serif;
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #333;
+}
+.quote-author {
+    font-family: "Catamaran", sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: bold;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-font-smoothing: antialiased !important;
+    text-rendering: optimizelegibility !important;
+}
+#quote-card {
+    max-width: 800px;
+    margin: 10px auto;
+    font-family: "Catamaran", sans-serif;
+}
+.quote-text {
+    white-space: pre-line;
+}
+.pagination {
+    margin-top: 20px; /* Adjust as needed */
+    margin-bottom: 20px; /* Adjust as needed */
+}
+
+.pagination ul.pagination-list li a {
+    padding: 8px 12px; /* Adjust size as needed */
+    font-size: 16px; /* Adjust font size as needed */
+}
+
+.pagination ul.pagination-list li.is-current a {
+    background-color: #3273dc; /* Adjust current page background color as needed */
+    color: #ffffff; /* Adjust current page text color as needed */
+}
+
+.pagination ul.pagination-list li a:hover {
+    background-color: #f0f0f0; /* Adjust hover background color as needed */
+    color: #3273dc; /* Adjust hover text color as needed */
+}
+.pagination {
+    font-family: "Catamaran", sans-serif;
+    justify-content: center;
+    margin-top: 20px;
+}
+.pagination-link {
+    color: #007bff;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+}
+.pagination-link.is-current {
+    color: #000;
+    font-weight: bold;
+}
