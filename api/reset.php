@@ -26,7 +26,7 @@ function jsonResponse($message, $status = 200, $additionalData = []) {
 
 function verifyApiKey($apiKey) {
     $validApiKey = getenv('APIKEY');
-    return $apiKey === $validApiKey;
+    return hash_equals($validApiKey, $apiKey);
 }
 
 function validateToken() {
