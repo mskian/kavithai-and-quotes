@@ -23,9 +23,11 @@ if(isset($_GET['username']) && $_GET['username'] !== '') {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#c7ecee">
 <link rel="shortcut icon" href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABqklEQVQ4jZ2Tv0scURDHP7P7SGWh14mkuXJZEH8cgqUWcklAsLBbCEEJSprkD7hD/4BUISHEkMBBiivs5LhCwRQBuWgQji2vT7NeYeF7GxwLd7nl4knMwMDMfL8z876P94TMLt+8D0U0EggQSsAjwMvga8ChJAqxqjTG3m53AQTg4tXHDRH9ABj+zf6oytbEu5d78nvzcyiivx7QXBwy46XOi5z1jbM+Be+nqVfP8yzuD3FM6rzIs9YE1hqGvDf15cVunmdx7w5eYJw1pcGptC9CD4gBUuef5Ujq/BhAlTLIeFYuyfmTZgeYv+2nPt1a371P+Hm1WUPYydKf0lnePwVmh3hnlcO1uc7yvgJUDtdG8oy98kduK2KjeHI0fzCQINSXOk/vlXBUOaihAwnGWd8V5r1uhe1VIK52V6JW2D4FqHZX5lphuwEE7ooyaN7gjLMmKSwYL+pMnV+MA/6+g8RYa2Lg2RBQbj4+rll7uymLy3coiuXb5PdQVf7rKYvojAB8Lf3YUJUHfSYR3XqeLO5JXvk0dhKqSqQQoCO+s5AIxCLa2Lxc6ALcAPwS26XFskWbAAAAAElFTkSuQmCC" />
+<?php $current_page = "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; echo '<link rel="canonical" href="'.$current_page.'" />'; ?>
 
-    <title>User Quotes and Kavithai</title>
-    <meta name="description" content="Read the Kavithai and Quotes Posted by the Users."/>
+
+    <title><?php echo $username; ?>'s Quotes and Kavithai</title>
+    <meta name="description" content="kavithai and Quotes Public Index - Our database collects kavithai and quotes from users - Users can submit their kavithai and quotes to the database."/>
 
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
@@ -71,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     displayQuotes(data.quotes);
                     renderPagination(data.page, data.perPage, data.totalQuotes);
                 } else {
-                    quoteContainer.innerHTML = `<div class="notification is-warning"><p class="content has-text-centered">${data.message}<br>View your Quotes and Kavithi data like this - https://quotes.mskian.com/username </p></div>`;
+                    quoteContainer.innerHTML = `<div class="notification is-warning"><p class="content has-text-centered">${data.message}<br>View your Quotes and Kavithi data like this - https://user.example.com/username </p></div>`;
                     pagination.innerHTML = "";
                 }
             })

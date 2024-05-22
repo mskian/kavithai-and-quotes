@@ -9,7 +9,7 @@ header('X-Content-Type-Options: nosniff');
 header('Strict-Transport-Security: max-age=63072000; includeSubDomains; preload');
 header('X-Robots-Tag: noindex, nofollow', true);
 
-define('MAX_FAILED_ATTEMPTS', 2);
+define('MAX_FAILED_ATTEMPTS', 5);
 define('LOCKOUT_TIME', 15 * 60);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
