@@ -41,10 +41,10 @@ http://localhost:6005/post
 ```sh
 http://localhost:6005/?username=username
 
-or
+(or)
 
 ## Requrite Proper Rewrite Rules for Both apache and nginx
-http://localhost:6005/username
+http://localhost:6005/p/username
 ```
 
 ## LICENSE

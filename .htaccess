@@ -21,7 +21,7 @@ RewriteRule ^index\.php$ / [R=301,L]
 
 # Rewrite URL to pass username as query parameter, excluding requests for index.php
 RewriteCond %{REQUEST_URI} !^/index\.php$
-RewriteRule ^([a-zA-Z0-9_-]+)$ /index.php?username=$1 [L]
+RewriteRule ^p/([a-zA-Z0-9_-]+)$ /index.php?username=$1 [L]
 
 <IfModule mod_rewrite.c>
 RewriteEngine On
