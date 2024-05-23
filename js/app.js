@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     displayQuotes(data.quotes);
                     renderPagination(data.page, data.perPage, data.totalQuotes);
                 } else {
-                    quoteContainer.innerHTML = `<div class="notification is-warning"><p class="content has-text-centered">${data.message}<br>View your Quotes and Kavithi data like this - https://user.example.com/p/username </p></div>`;
+                    quoteContainer.innerHTML = `<div class="notification is-warning"><p class="content has-text-centered">${data.message}</p></div>`;
                     pagination.innerHTML = "";
                 }
             })

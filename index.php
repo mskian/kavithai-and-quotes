@@ -42,18 +42,11 @@ if(isset($_GET['username']) && $_GET['username'] !== '') {
 
 <section class="section">
     <div class="container">
-        <div id="quote-card" class="card">
-            <div class="card-content">
-            <br>
             <div id="user"></div>
-                <div id="quote-container">
-                    <hr>
-                </div>
+                <div id="quote-container"></div>
                 <div class="content has-text-centered">
-                    <div id="pagination" class="pagination is-centered" role="navigation" aria-label="pagination"></div>
-                </div>
+                <div id="pagination" class="pagination is-centered" role="navigation" aria-label="pagination"></div>
             </div>
-        </div>  
     </div>
 </section>
 
@@ -69,11 +62,11 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data && data.quotes && data.quotes.length > 0 && data.user) {
-                    user.innerHTML = `<div class="content has-text-centered"><h1 class="title is-size-5">Posts by 👤 ${data.user}</h1></div><br>`
+                    user.innerHTML = `<div class="content has-text-centered"><h1 class="title is-size-5 has-text-warning">Posts by 👤 ${data.user}</h1></div>`
                     displayQuotes(data.quotes);
                     renderPagination(data.page, data.perPage, data.totalQuotes);
                 } else {
-                    quoteContainer.innerHTML = `<div class="notification is-warning"><p class="content has-text-centered">${data.message}<br>View your Quotes and Kavithi data like this - https://user.example.com/p/username </p></div>`;
+                    quoteContainer.innerHTML = `<div class="notification is-warning"><p class="content has-text-centered">${data.message}</p></div>`;
                     pagination.innerHTML = "";
                 }
             })
@@ -84,10 +77,18 @@ document.addEventListener("DOMContentLoaded", function () {
         quoteContainer.innerHTML = "";
         quotes.forEach(quote => {
             const quoteCard = `
-                        <p class="quote-text">${quote.quote_text}</p><br>
-                        <p><span class="tag is-link">${quote.tags}</span><p><br>
-                        <p class="quote-author">👤 ${quote.author_name} - 📅 ${quote.date}</p><hr>
-                    `;
+                        <div class="chat-box">
+                        <div class="quote-card">
+                        <div class="quote-text">
+                          ${quote.quote_text}
+                        </div>
+                        <br>
+                        <div class="quote-author">👤 ${quote.author_name}</div>
+                        <div class="quote-date">📅 ${quote.date}</div>
+                        <div class="quote-tags">#${quote.tags}</div>
+                        </div>
+                        </div>
+                        </div>`;
             quoteContainer.innerHTML += quoteCard;
         });
     }
@@ -105,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (page > 1) {
             paginationHTML += `
     <li>
-        <a class="pagination-previous" aria-label="Previous" data-page="${prevPage}">Previous</a>
+        <a class="pagination-previous button is-warning" aria-label="Previous" data-page="${prevPage}">Previous</a>
     </li>
 `;
         }
@@ -121,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (page < totalPages) {
             paginationHTML += `
     <li>
-        <a class="pagination-next" aria-label="Next" data-page="${nextPage}">Next</a>
+        <a class="pagination-next button is-warning" aria-label="Next" data-page="${nextPage}">Next</a>
     </li>
 `;
         }
