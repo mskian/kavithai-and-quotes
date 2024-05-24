@@ -45,7 +45,7 @@ if(isset($_GET['username']) && $_GET['username'] !== '') {
             <div id="user"></div>
                 <div id="quote-container"></div>
                 <div class="content has-text-centered">
-                <div id="pagination" class="pagination is-centered" role="navigation" aria-label="pagination"></div>
+                <div id="pagination" class="pagination is-centered is-rounded" role="navigation" aria-label="pagination"></div>
             </div>
     </div>
 </section>
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(response => response.json())
             .then(data => {
                 if (data && data.quotes && data.quotes.length > 0 && data.user) {
-                    user.innerHTML = `<div class="content has-text-centered"><h1 class="title is-size-5 has-text-warning">Posts by 👤 ${data.user}</h1></div>`
+                    user.innerHTML = `<div class="content has-text-centered"><h1 class="title is-size-5 has-text-warning">Posts by ✍ ${data.user}</h1></div>`
                     displayQuotes(data.quotes);
                     renderPagination(data.page, data.perPage, data.totalQuotes);
                 } else {
@@ -83,9 +83,9 @@ document.addEventListener("DOMContentLoaded", function () {
                           ${quote.quote_text}
                         </div>
                         <br>
-                        <div class="quote-author">👤 ${quote.author_name}</div>
+                        <div class="quote-author">📝 ${quote.author_name}</div>
                         <div class="quote-date">📅 ${quote.date}</div>
-                        <div class="quote-tags">#${quote.tags}</div>
+                        <div class="quote-tags">🔖 #${quote.tags}</div>
                         </div>
                         </div>
                         </div>`;
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderPagination(page, perPage, totalQuotes) {
         const totalPages = Math.ceil(totalQuotes / perPage);
-        const maxPagesToShow = 5; // Maximum number of page links to show
+        const maxPagesToShow = 3; // Maximum number of page links to show
         const currentPageGroup = Math.ceil(page / maxPagesToShow);
         const startPage = (currentPageGroup - 1) * maxPagesToShow + 1;
         const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages);
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (page > 1) {
             paginationHTML += `
     <li>
-        <a class="pagination-previous button is-warning" aria-label="Previous" data-page="${prevPage}">Previous</a>
+        <a class="pagination-previous button is-warning is-rounded" aria-label="Previous" data-page="${prevPage}">⬅</a>
     </li>
 `;
         }
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (page < totalPages) {
             paginationHTML += `
     <li>
-        <a class="pagination-next button is-warning" aria-label="Next" data-page="${nextPage}">Next</a>
+        <a class="pagination-next button is-warning is-rounded" aria-label="Next" data-page="${nextPage}">➡</a>
     </li>
 `;
         }
