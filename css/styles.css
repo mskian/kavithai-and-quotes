@@ -72,10 +72,15 @@ html, body {
     border-bottom: 10px solid transparent;
 }
 .quote-text {
-    font-family: "Catamaran", sans-serif;
+    letter-spacing: .03em;
+    word-wrap: break-word;
+    font-family: 'Catamaran', sans-serif;
     font-size: 16px;
-    line-height: 1.5;
-    color: #333;
+    color: #221f1f;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-font-smoothing: antialiased !important;
+    text-rendering: optimizelegibility !important;
 }
 .quote-author {
     font-family: "Catamaran", sans-serif;
