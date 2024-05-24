@@ -1,4 +1,11 @@
 admin.php
 .env
 data/
+data
 cache
+vendor
+api/vendor
+/api/vendor
+node_modules
+composer.lock
+admin

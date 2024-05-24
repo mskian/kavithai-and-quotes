@@ -28,6 +28,15 @@ DBUSER=xxxxxxx
 DBPASSWORD=xxxxxxxxxxxxxxxxxxxxxx
 AccessToken=<Pushbullet access token>
 DEVICE=<Device ID>
+
+## SMTP
+
+SMPT=smtp-relay.example.com
+USERNAME=smpt username
+PASSWORD=smpt password
+EMAIL=smpt from email address
+TITLE=email title
+
 ```
 
 - Submit Kavithai and Quotes
