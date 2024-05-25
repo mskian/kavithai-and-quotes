@@ -196,6 +196,18 @@ header('X-Robots-Tag: noindex, nofollow', true);
                                                 <option value="Mother">Mother</option>
                                                 <option value="Siblings">Siblings</option>
                                                 <option value="Anbu">Anbu</option>
+                                                <option value="Whatsapp">Whatsapp</option>
+                                                <option value="Song Lyrics">Song Lyrics</option>
+                                                <option value="Status">Status</option>
+                                                <option value="Relationship">Relationship</option>
+                                                <option value="Attitude">Attitude</option>
+                                                <option value="Haiku">Haiku</option>
+                                                <option value="Husband">Husband</option>
+                                                <option value="Wife">Wife</option>
+                                                <option value="Technology">Technology</option>
+                                                <option value="General">General</option>
+                                                <option value="Love">Love</option>
+                                                <option value="Festival">Festival</option>
                                             </select>
                                         </div>
                                     </div>
