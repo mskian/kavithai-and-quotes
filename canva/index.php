@@ -25,6 +25,21 @@ function generateUniqueFilename(string $prefix = 'kavithai-'): string {
 
 $filename = generateUniqueFilename();
 
+$imageOptions = [
+    'normal' => [
+        'background' => '/canva/background.png',
+        'alt' => 'Tamil SMS kavithai'
+    ],
+    'love' => [
+        'background' => '/canva/love.png',
+        'alt' => 'Tamil SMS Kadhal'
+    ],
+    'tamilsms' => [
+        'background' => '/canva/tamilsms.png',
+        'alt' => 'Tamil SMS'
+    ]
+];
+
 ?>
 
 <!DOCTYPE html>
@@ -223,6 +238,19 @@ $filename = generateUniqueFilename();
             </div>
         </div>
         <div class="field">
+        <label class="label" for="post-type">Post Template:</label>
+        <div class="control">
+        <div class="select">
+            <select id="post-type" name="post-type">
+                <option value="normal">Normal Post</option>
+                <option value="love">Love Post</option>
+                <option value="tamilsms">Tamil SMS</option>
+            </select>
+           </div>
+         </div>
+       </div>
+       <br>
+        <div class="field">
             <div class="control">
                 <div class="buttons is-centered">
                 <button class="button is-primary" type="submit">Update image</button>
@@ -263,122 +291,138 @@ $filename = generateUniqueFilename();
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha256-6H5VB5QyLldKH9oMFUmjxw2uWpPZETQXpCkBaDjquMs=" crossorigin="anonymous"></script>
 
 <script>
-    function updateQuote(event) {
-        event.preventDefault();
-        var quote = document.getElementById('quote').value;
-        var fontSize = document.getElementById('font-size').value;
-        var marginTop = document.getElementById('margin-top').value;
-        var marginBottom = document.getElementById('margin-bottom').value;
-        var quoteText = document.getElementById('quote-text');
+function updateQuote(event) {
+    event.preventDefault();
+    const postType = document.getElementById('post-type').value;
+    const quote = document.getElementById('quote').value;
+    const fontSize = document.getElementById('font-size').value;
+    const marginTop = document.getElementById('margin-top').value;
+    const marginBottom = document.getElementById('margin-bottom').value;
+    const quoteText = document.getElementById('quote-text');
 
-        if (!quote || !fontSize || isNaN(fontSize) || fontSize < 10 || fontSize > 100) {
-            showNotification('Please enter a valid quote and font size between 10 and 100.', 'is-danger');
-            return;
-        }
-
-        if (isNaN(marginTop) || marginTop < 0 || marginTop > 150) {
-            showNotification('Please enter a valid margin top between 0 and 150.', 'is-danger');
-            return;
-        }
-
-        marginTop = marginTop + 'px';
-        marginBottom = marginBottom + 'px';
-
-        quoteText.innerText = quote;
-        quoteText.style.fontSize = fontSize + 'px';
-        quoteText.style.setProperty('--margin-top', marginTop);
-        quoteText.style.setProperty('--margin-bottom', marginBottom);
-
-        localStorage.setItem('quote', quote);
-        localStorage.setItem('fontSize', fontSize);
-        localStorage.setItem('marginTop', marginTop);
-        localStorage.setItem('marginBottom', marginBottom);
-
-        const download = document.getElementById('download-image');
-        download.style.display = 'block';
-
-        CImage();
+    let backgroundImage = '<?php echo $imageOptions['normal']['background']; ?>';
+    if (postType === 'love') {
+        backgroundImage = '<?php echo $imageOptions['love']['background']; ?>';
+    } else if (postType === 'tamilsms') {
+        backgroundImage = '<?php echo $imageOptions['tamilsms']['background']; ?>';
+    } else {
+        backgroundImage = '<?php echo $imageOptions['normal']['background']; ?>';
+    }
+  
+    if (!quote || !fontSize || isNaN(fontSize) || fontSize < 10 || fontSize > 100) {
+        showNotification('Please enter a valid quote and font size between 10 and 100.', 'is-danger');
+        return;
     }
 
-    document.getElementById('quote-form').addEventListener('submit', updateQuote);
-    document.getElementById('quote').addEventListener('input', saveToLocalStorage);
-    document.getElementById('font-size').addEventListener('input', saveToLocalStorage);
-    document.getElementById('margin-top').addEventListener('input', saveToLocalStorage);
-    document.getElementById('margin-bottom').addEventListener('input', saveToLocalStorage);
-
-    function saveToLocalStorage() {
-        var quote = document.getElementById('quote').value;
-        var fontSize = document.getElementById('font-size').value;
-        var marginTop = document.getElementById('margin-top').value;
-        var marginBottom = document.getElementById('margin-bottom').value;
-
-        localStorage.setItem('quote', quote);
-        localStorage.setItem('fontSize', fontSize);
-        localStorage.setItem('marginTop', marginTop);
-        localStorage.setItem('marginBottom', marginBottom);
+    if (isNaN(marginTop) || marginTop < 0 || marginTop > 150) {
+        showNotification('Please enter a valid margin top between 0 and 150.', 'is-danger');
+        return;
     }
 
-    function restoreFromLocalStorage() {
-        var quote = localStorage.getItem('quote');
-        var fontSize = localStorage.getItem('fontSize');
-        var marginTop = localStorage.getItem('marginTop');
-        var marginBottom = localStorage.getItem('marginBottom');
+    const marginTopPx = marginTop + 'px';
+    const marginBottomPx = marginBottom + 'px';
 
-        if (quote) document.getElementById('quote').value = quote;
-        if (fontSize) document.getElementById('font-size').value = fontSize;
-        if (marginTop) document.getElementById('margin-top').value = parseInt(marginTop, 10);
-        if (marginBottom) document.getElementById('margin-bottom').value = parseInt(marginBottom, 10);
-    }
+    quoteText.innerText = quote;
+    quoteText.style.fontSize = fontSize + 'px';
+    quoteText.style.setProperty('--margin-top', marginTopPx);
+    quoteText.style.setProperty('--margin-bottom', marginBottomPx);
 
-    function CImage() {
-        var scale = 1080 / document.querySelector('.quotes-box').offsetWidth;
+    localStorage.setItem('quote', quote);
+    localStorage.setItem('fontSize', fontSize);
+    localStorage.setItem('marginTop', marginTopPx);
+    localStorage.setItem('marginBottom', marginBottomPx);
+    localStorage.setItem('image', postType);
+    
+    document.querySelector('.quotes-box').style.backgroundImage = 'url(' + backgroundImage + ')';
+    const download = document.getElementById('download-image');
+    download.style.display = 'block';
 
-        html2canvas(document.getElementById('quote-box'), {
-            allowTaint: true,
-            useCORS: true,
-            scale: scale,
-            logging: false,
-        }).then(function(canvas) {
-            var canvasOutput = document.getElementById('canvas-output');
-            canvasOutput.src = canvas.toDataURL("image/png", 1);
-            canvasOutput.style.display = 'block';
+    CImage();
+}
 
-        });
-    }
+document.getElementById('quote-form').addEventListener('submit', updateQuote);
+document.getElementById('quote').addEventListener('input', saveToLocalStorage);
+document.getElementById('font-size').addEventListener('input', saveToLocalStorage);
+document.getElementById('margin-top').addEventListener('input', saveToLocalStorage);
+document.getElementById('margin-bottom').addEventListener('input', saveToLocalStorage);
+document.getElementById('post-type').addEventListener('input', saveToLocalStorage);
 
-    function downloadImage() {
-        var scale = 1080 / document.querySelector('.quotes-box').offsetWidth;
+function saveToLocalStorage() {
+    const quote = document.getElementById('quote').value;
+    const fontSize = document.getElementById('font-size').value;
+    const marginTop = document.getElementById('margin-top').value;
+    const marginBottom = document.getElementById('margin-bottom').value;
+    const postType = document.getElementById('post-type').value;
 
-        html2canvas(document.getElementById('quote-box'), {
-            allowTaint: true,
-            useCORS: true,
-            scale: scale,
-            logging: false,
-        }).then(function(canvas) {
-            var link = document.createElement('a');
-            link.download = '<?php echo $filename; ?>';
-            link.href = canvas.toDataURL("image/png", 1);
-            link.click();
+    localStorage.setItem('quote', quote);
+    localStorage.setItem('fontSize', fontSize);
+    localStorage.setItem('marginTop', marginTop);
+    localStorage.setItem('marginBottom', marginBottom);
+    localStorage.setItem('image', postType);
+}
 
-        });
-    }
+function restoreFromLocalStorage() {
+    const quote = localStorage.getItem('quote');
+    const fontSize = localStorage.getItem('fontSize');
+    const marginTop = localStorage.getItem('marginTop');
+    const marginBottom = localStorage.getItem('marginBottom');
+    const postType = localStorage.getItem('image');
 
-    function showNotification(message, type) {
-        var notification = document.getElementById('notification');
-        var notificationMessage = document.getElementById('notification-message');
+    if (quote) document.getElementById('quote').value = quote;
+    if (fontSize) document.getElementById('font-size').value = fontSize;
+    if (postType) document.getElementById('post-type').value = postType;
+    if (marginTop) document.getElementById('margin-top').value = parseInt(marginTop, 10);
+    if (marginBottom) document.getElementById('margin-bottom').value = parseInt(marginBottom, 10);
+}
 
-        notificationMessage.innerText = message;
-        notification.className = 'notification ' + type + ' is-light';
-        notification.style.display = 'block';
-    }
+function CImage() {
+    const scale = 1080 / document.querySelector('.quotes-box').offsetWidth;
 
-    function hideNotification() {
-        var notification = document.getElementById('notification');
-        notification.style.display = 'none';
-    }
+    html2canvas(document.getElementById('quote-box'), {
+        allowTaint: true,
+        useCORS: true,
+        scale: scale,
+        logging: false,
+    }).then(function(canvas) {
+        const canvasOutput = document.getElementById('canvas-output');
+        canvasOutput.src = canvas.toDataURL("image/png", 1);
+        canvasOutput.style.display = 'block';
 
-    document.addEventListener('DOMContentLoaded', restoreFromLocalStorage);
+    });
+}
 
+function downloadImage() {
+    const scale = 1080 / document.querySelector('.quotes-box').offsetWidth;
+
+    html2canvas(document.getElementById('quote-box'), {
+        allowTaint: true,
+        useCORS: true,
+        scale: scale,
+        logging: false,
+    }).then(function(canvas) {
+        const link = document.createElement('a');
+        link.download = '<?php echo $filename; ?>';
+        link.href = canvas.toDataURL("image/png", 1);
+        link.click();
+
+    });
+}
+
+function showNotification(message, type) {
+    const notification = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notification-message');
+
+    notificationMessage.innerText = message;
+    notification.className = 'notification ' + type + ' is-light';
+    notification.style.display = 'block';
+}
+
+function hideNotification() {
+    const notification = document.getElementById('notification');
+    notification.style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', restoreFromLocalStorage);
 </script>
 
 </body>
