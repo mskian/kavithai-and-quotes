@@ -101,7 +101,6 @@ $filename = generateUniqueFilename();
         font-style: italic;
         color: #666;
     }
-
     /* Styles for the close button */
     .delete {
         position: absolute;
@@ -109,37 +108,27 @@ $filename = generateUniqueFilename();
         right: 0;
         cursor: pointer;
     }
-
     .canvas-output {
         width: 100%;
         height: auto;
     }
-
     .hide-me {
         visibility: none;
         max-height: 0;
         overflow: hidden;
     }
-
     #quote-container {
-        margin: 10px auto;
-        border-radius: 10px;
-        padding: 20px;
         background-color: #fff;
     }
-
     #quote {
-        font-size: 20px;
         margin-bottom: 20px;
         color: #333;
     }
-
     #quote-card {
         font-family: "Catamaran", sans-serif;
         max-width: 800px;
         margin: 10px auto;
     }
-
     button {
         font-family: "Catamaran", sans-serif;
         display: flex;
@@ -155,13 +144,41 @@ $filename = generateUniqueFilename();
         -moz-font-smoothing: antialiased !important;
         text-rendering: optimizeLegibility !important;
     }
-
     input {
         font-family: "Catamaran", sans-serif;
     }
-
+    .textarea {
+      padding: 10px;
+      border: 2px solid #4CAF50;
+      border-radius: 15px;
+      font-size: 16px;
+      font-weight: 700;
+      outline: none;
+      transition: border-color 0.3s;
+      resize: vertical;
+      min-height: 100px;
+    }
+    .textarea:hover {
+      border-color: #45a049;
+    }
+    .textarea:focus {
+      border-color: #2196F3;
+      box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
+    }
     textarea {
-        font-family: "Catamaran", sans-serif;
+       font-family: "Catamaran", sans-serif;
+    }
+    ::-webkit-input-placeholder {
+       font-family: "Catamaran", sans-serif;
+    }
+    ::-moz-placeholder {
+       font-family: "Catamaran", sans-serif;
+    }
+    :-ms-input-placeholder {
+       font-family: "Catamaran", sans-serif;
+    }
+    :-moz-placeholder {
+       font-family: "Catamaran", sans-serif;
     }
 </style>
 
@@ -196,13 +213,13 @@ $filename = generateUniqueFilename();
         <div class="field">
             <label class="label" for="margin-top">Margin Top:</label>
             <div class="control">
-                <input class="input" type="number" id="margin-top" name="margin-top" min="0" max="150" value="0">
+                <input class="input" type="number" id="margin-top" name="margin-top" min="0" max="150" value="1">
             </div>
         </div>
         <div class="field">
             <label class="label" for="margin-bottom">Margin Bottom:</label>
             <div class="control">
-                <input class="input" type="number" id="margin-bottom" name="margin-bottom" min="0" max="150" value="0">
+                <input class="input" type="number" id="margin-bottom" name="margin-bottom" min="0" max="150" value="1">
             </div>
         </div>
         <div class="field">
@@ -215,12 +232,12 @@ $filename = generateUniqueFilename();
     </form>
 
     <hr>
-    <br>
     <!-- Button to trigger download -->
+    <div id="download-image" style="display: none;">
     <div class="buttons is-centered">
     <button class="button is-info" onclick="downloadImage()">Download Image</button>
     </div>
-
+    </div>
     <br>
 
 <div class="hide-me">
@@ -236,9 +253,7 @@ $filename = generateUniqueFilename();
 </p>
 </div>
 </div>
-
-<img id="canvas-output" src="" style="display: none;"><hr>
-
+<img id="canvas-output" src="" style="display: none;"><br>
 </div>
 </div>
 </div>
@@ -252,24 +267,68 @@ $filename = generateUniqueFilename();
         event.preventDefault();
         var quote = document.getElementById('quote').value;
         var fontSize = document.getElementById('font-size').value;
-        var marginTop = document.getElementById('margin-top').value + 'px';
-        var marginBottom = document.getElementById('margin-bottom').value + 'px';
+        var marginTop = document.getElementById('margin-top').value;
+        var marginBottom = document.getElementById('margin-bottom').value;
         var quoteText = document.getElementById('quote-text');
 
-        if (!quote || !fontSize) {
-            showNotification('Please enter both quote and font size.', 'is-danger');
+        if (!quote || !fontSize || isNaN(fontSize) || fontSize < 10 || fontSize > 100) {
+            showNotification('Please enter a valid quote and font size between 10 and 100.', 'is-danger');
             return;
         }
+
+        if (isNaN(marginTop) || marginTop < 0 || marginTop > 150) {
+            showNotification('Please enter a valid margin top between 0 and 150.', 'is-danger');
+            return;
+        }
+
+        marginTop = marginTop + 'px';
+        marginBottom = marginBottom + 'px';
 
         quoteText.innerText = quote;
         quoteText.style.fontSize = fontSize + 'px';
         quoteText.style.setProperty('--margin-top', marginTop);
         quoteText.style.setProperty('--margin-bottom', marginBottom);
 
-        CImage()
+        localStorage.setItem('quote', quote);
+        localStorage.setItem('fontSize', fontSize);
+        localStorage.setItem('marginTop', marginTop);
+        localStorage.setItem('marginBottom', marginBottom);
+
+        const download = document.getElementById('download-image');
+        download.style.display = 'block';
+
+        CImage();
     }
 
     document.getElementById('quote-form').addEventListener('submit', updateQuote);
+    document.getElementById('quote').addEventListener('input', saveToLocalStorage);
+    document.getElementById('font-size').addEventListener('input', saveToLocalStorage);
+    document.getElementById('margin-top').addEventListener('input', saveToLocalStorage);
+    document.getElementById('margin-bottom').addEventListener('input', saveToLocalStorage);
+
+    function saveToLocalStorage() {
+        var quote = document.getElementById('quote').value;
+        var fontSize = document.getElementById('font-size').value;
+        var marginTop = document.getElementById('margin-top').value;
+        var marginBottom = document.getElementById('margin-bottom').value;
+
+        localStorage.setItem('quote', quote);
+        localStorage.setItem('fontSize', fontSize);
+        localStorage.setItem('marginTop', marginTop);
+        localStorage.setItem('marginBottom', marginBottom);
+    }
+
+    function restoreFromLocalStorage() {
+        var quote = localStorage.getItem('quote');
+        var fontSize = localStorage.getItem('fontSize');
+        var marginTop = localStorage.getItem('marginTop');
+        var marginBottom = localStorage.getItem('marginBottom');
+
+        if (quote) document.getElementById('quote').value = quote;
+        if (fontSize) document.getElementById('font-size').value = fontSize;
+        if (marginTop) document.getElementById('margin-top').value = parseInt(marginTop, 10);
+        if (marginBottom) document.getElementById('margin-bottom').value = parseInt(marginBottom, 10);
+    }
 
     function CImage() {
         var scale = 1080 / document.querySelector('.quotes-box').offsetWidth;
@@ -317,6 +376,8 @@ $filename = generateUniqueFilename();
         var notification = document.getElementById('notification');
         notification.style.display = 'none';
     }
+
+    document.addEventListener('DOMContentLoaded', restoreFromLocalStorage);
 
 </script>
 
