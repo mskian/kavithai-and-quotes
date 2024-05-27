@@ -195,6 +195,10 @@ $imageOptions = [
     :-moz-placeholder {
        font-family: "Catamaran", sans-serif;
     }
+    select {
+        font-family: "Catamaran", sans-serif;
+        font-weight: 700;
+    }
 </style>
 
 </head>
