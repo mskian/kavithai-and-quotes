@@ -215,7 +215,6 @@ $imageOptions = [
         <span id="notification-message"></span>
     </div>
 
-     <!-- Input form for adding quotes -->
      <form id="quote-form">
         <div class="field">
             <label class="label" for="quote">Text:</label>
@@ -226,25 +225,25 @@ $imageOptions = [
         <div class="field">
             <label class="label" for="font-size">Font Size:</label>
             <div class="control">
-                <input class="input" type="number" id="font-size" name="font-size" min="10" max="100" value="35">
+                <input class="input is-rounded" type="number" id="font-size" name="font-size" min="10" max="100" value="35">
             </div>
         </div>
         <div class="field">
             <label class="label" for="margin-top">Margin Top:</label>
             <div class="control">
-                <input class="input" type="number" id="margin-top" name="margin-top" min="0" max="150" value="1">
+                <input class="input is-rounded" type="number" id="margin-top" name="margin-top" min="0" max="150" value="1">
             </div>
         </div>
         <div class="field">
             <label class="label" for="margin-bottom">Margin Bottom:</label>
             <div class="control">
-                <input class="input" type="number" id="margin-bottom" name="margin-bottom" min="0" max="150" value="1">
+                <input class="input is-rounded" type="number" id="margin-bottom" name="margin-bottom" min="0" max="150" value="1">
             </div>
         </div>
         <div class="field">
         <label class="label" for="post-type">Post Template:</label>
         <div class="control">
-        <div class="select">
+        <div class="select is-rounded">
             <select id="post-type" name="post-type">
                 <option value="normal">Normal Post</option>
                 <option value="love">Love Post</option>
@@ -253,24 +252,25 @@ $imageOptions = [
            </div>
          </div>
        </div>
+       <div class="columns is-centered">
+       <div class="column is-half">
+       <div id="preview-image-container" style="position: relative;">
+       <img id="preview-image" src="" alt="Preview Image" style="max-width: 100%; height: auto; display: none;">
+       <p id="demo-preview-text" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 20px; text-align: center; display: none;">Preview Text</p>
+       </div>
+       </div>
+       </div>
        <br>
         <div class="field">
             <div class="control">
                 <div class="buttons is-centered">
-                <button class="button is-primary" type="submit">Update image</button>
+                <button class="button is-warning is-rounded" type="submit">Create</button>
             </div>
             </div>
         </div>
     </form>
 
     <hr>
-    <!-- Button to trigger download -->
-    <div id="download-image" style="display: none;">
-    <div class="buttons is-centered">
-    <button class="button is-info" onclick="downloadImage()">Download Image</button>
-    </div>
-    </div>
-    <br>
 
 <div class="hide-me">
 <div class="quotes-box" id="quote-box">
@@ -285,7 +285,17 @@ $imageOptions = [
 </p>
 </div>
 </div>
-<img id="canvas-output" src="" style="display: none;"><br>
+<div class="columns is-centered">
+<div class="column is-half">
+<img id="canvas-output" src="" style="display: none;">
+</div>
+</div>
+<div id="download-image" style="display: none;">
+<div class="buttons is-centered">
+<button class="button is-link is-rounded" onclick="downloadImage()">Download</button>
+</div>
+</div>
+<br>
 </div>
 </div>
 </div>
@@ -339,8 +349,9 @@ function updateQuote(event) {
     
     document.querySelector('.quotes-box').style.backgroundImage = 'url(' + backgroundImage + ')';
     const download = document.getElementById('download-image');
+    const previewImage = document.getElementById('preview-image');
     download.style.display = 'block';
-
+    previewImage.style.display = 'none';
     CImage();
 }
 
@@ -350,6 +361,36 @@ document.getElementById('font-size').addEventListener('input', saveToLocalStorag
 document.getElementById('margin-top').addEventListener('input', saveToLocalStorage);
 document.getElementById('margin-bottom').addEventListener('input', saveToLocalStorage);
 document.getElementById('post-type').addEventListener('input', saveToLocalStorage);
+
+ document.getElementById('post-type').addEventListener('change', function () {
+        const postType = this.value;
+        const previewImage = document.getElementById('preview-image');
+        const demoPreviewText = document.getElementById('demo-preview-text');
+
+        if (postType === 'normal') {
+            previewImage.src = '<?php echo $imageOptions['normal']['background']; ?>';
+        } else if (postType === 'love') {
+            previewImage.src = '<?php echo $imageOptions['love']['background']; ?>';
+        } else if (postType === 'tamilsms') {
+            previewImage.src = '<?php echo $imageOptions['tamilsms']['background']; ?>';
+        }
+
+        if (postType === 'normal') {
+            demoPreviewText.innerText = 'Normal Post Preview';
+        } else if (postType === 'love') {
+            demoPreviewText.innerText = 'Love Post Preview';
+        } else if (postType === 'tamilsms') {
+            demoPreviewText.innerText = 'Tamil SMS Preview';
+        }
+
+        previewImage.style.display = 'block';
+        demoPreviewText.style.display = 'block';
+        const download = document.getElementById('download-image');
+        download.style.display = 'none';
+        const canvasOutput = document.getElementById('canvas-output');
+        canvasOutput.style.display = 'none';
+
+    });
 
 function saveToLocalStorage() {
     const quote = document.getElementById('quote').value;
