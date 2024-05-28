@@ -37,6 +37,18 @@ $imageOptions = [
     'tamilsms' => [
         'background' => '/canva/tamilsms.png',
         'alt' => 'Tamil SMS'
+    ],
+    'tamilsmsone' => [
+        'background' => '/canva/tamilsmsone.png',
+        'alt' => 'Tamil SMS Social Share'
+    ],
+    'yellow' => [
+        'background' => '/canva/yellow.png',
+        'alt' => 'Yellow'
+    ],
+    'mercury' => [
+        'background' => '/canva/mercury.png',
+        'alt' => 'Mercury'
     ]
 ];
 
@@ -63,6 +75,9 @@ $imageOptions = [
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100..900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@melloware/coloris@0.22.0/dist/coloris.min.css" integrity="sha256-/l5LFjgUyBUmByCzNvkmdbwGU67dxic3wXL7mncTorA=" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/@melloware/coloris@0.22.0/dist/umd/coloris.min.js" integrity="sha256-ww4FjsGboXzCDLqjt6L3OOsIfm8riBKxyLb6QX181XU=" crossorigin="anonymous"></script>
 
 <style>
     html, body {
@@ -144,7 +159,7 @@ $imageOptions = [
         max-width: 800px;
         margin: 10px auto;
     }
-    button {
+    .user-button {
         font-family: "Catamaran", sans-serif;
         display: flex;
         flex-grow: 0.3;
@@ -199,6 +214,48 @@ $imageOptions = [
         font-family: "Catamaran", sans-serif;
         font-weight: 700;
     }
+    .picker {
+      width: 130px;
+      height: 30px;
+      padding: 0 10px;
+      border: 1px solid #ccc;
+      border-radius: 1px;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      box-sizing: border-box;
+    }
+    input[type="number"] {
+      padding: 10px;
+      border: 2px solid #4CAF50;
+      border-radius: 15px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+  input[type="number"]:hover {
+    border-color: #999;
+  }
+
+  input[type="number"]:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  }
+  input[type=number] {
+	    width: 5em;
+	    padding: 0.5em;
+	    border: .2em solid #E91E63;
+	    border-radius: 1em;
+	    text-align: center;
+	    color: #E91E63;
+	    appearance: textfield;
+	    margin: 0;
+	    &::-webkit-inner-spin-button {
+		  opacity: 1;
+	   	background: red;
+	  }
+  }
 </style>
 
 </head>
@@ -229,6 +286,12 @@ $imageOptions = [
             </div>
         </div>
         <div class="field">
+           <label class="label">Font Color:</label>
+           <div class="control">
+           <input type="text" id="font-color" class="picker color-picker" value="#F2E3B6" data-coloris>
+          </div>
+        </div>
+        <div class="field">
             <label class="label" for="margin-top">Margin Top:</label>
             <div class="control">
                 <input class="input is-rounded" type="number" id="margin-top" name="margin-top" min="0" max="150" value="1">
@@ -248,6 +311,9 @@ $imageOptions = [
                 <option value="normal">Normal Post</option>
                 <option value="love">Love Post</option>
                 <option value="tamilsms">Tamil SMS</option>
+                <option value="tamilsmsone">Tamil SMS One</option>
+                <option value="yellow">Yellow</option>
+                <option value="mercury">Mercury</option>
             </select>
            </div>
          </div>
@@ -256,7 +322,7 @@ $imageOptions = [
        <div class="column is-half">
        <div id="preview-image-container" style="position: relative;">
        <img id="preview-image" src="" alt="Preview Image" style="max-width: 100%; height: auto; display: none;">
-       <p id="demo-preview-text" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 20px; text-align: center; display: none;">Preview Text</p>
+       <!---<p id="demo-preview-text" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 20px; text-align: center; display: none;">Preview Text</p>--->
        </div>
        </div>
        </div>
@@ -264,7 +330,7 @@ $imageOptions = [
         <div class="field">
             <div class="control">
                 <div class="buttons is-centered">
-                <button class="button is-warning is-rounded" type="submit">Create</button>
+                <button class="button is-warning user-button is-rounded" type="submit">Create</button>
             </div>
             </div>
         </div>
@@ -292,7 +358,7 @@ $imageOptions = [
 </div>
 <div id="download-image" style="display: none;">
 <div class="buttons is-centered">
-<button class="button is-link is-rounded" onclick="downloadImage()">Download</button>
+<button class="button is-link is-rounded user-button" onclick="downloadImage()">Download</button>
 </div>
 </div>
 <br>
@@ -305,6 +371,26 @@ $imageOptions = [
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha256-6H5VB5QyLldKH9oMFUmjxw2uWpPZETQXpCkBaDjquMs=" crossorigin="anonymous"></script>
 
 <script>
+ Coloris({
+  themeMode: 'dark',
+  alpha: false,
+  formatToggle: true,
+  el: '.coloris',
+      swatches: [
+        '#F2E3B6',
+        '#000000',
+        '#264653',
+        '#E9D5FF',
+        '#f4a261',
+        '#dfe6e9',
+        '#d62828',
+        '#023e8a',
+        '#0077b6',
+        '#FEF08A',
+        '#00b4d8',
+        '#48cae4'
+      ]
+});
 function updateQuote(event) {
     event.preventDefault();
     const postType = document.getElementById('post-type').value;
@@ -312,6 +398,7 @@ function updateQuote(event) {
     const fontSize = document.getElementById('font-size').value;
     const marginTop = document.getElementById('margin-top').value;
     const marginBottom = document.getElementById('margin-bottom').value;
+    const fontColor = document.getElementById('font-color').value; 
     const quoteText = document.getElementById('quote-text');
 
     let backgroundImage = '<?php echo $imageOptions['normal']['background']; ?>';
@@ -319,6 +406,12 @@ function updateQuote(event) {
         backgroundImage = '<?php echo $imageOptions['love']['background']; ?>';
     } else if (postType === 'tamilsms') {
         backgroundImage = '<?php echo $imageOptions['tamilsms']['background']; ?>';
+    } else if (postType === 'tamilsmsone') {
+        backgroundImage = '<?php echo $imageOptions['tamilsmsone']['background']; ?>';
+    } else if (postType === 'yellow') {
+        backgroundImage = '<?php echo $imageOptions['yellow']['background']; ?>';
+    } else if (postType === 'mercury') {
+        backgroundImage = '<?php echo $imageOptions['mercury']['background']; ?>';
     } else {
         backgroundImage = '<?php echo $imageOptions['normal']['background']; ?>';
     }
@@ -340,12 +433,7 @@ function updateQuote(event) {
     quoteText.style.fontSize = fontSize + 'px';
     quoteText.style.setProperty('--margin-top', marginTopPx);
     quoteText.style.setProperty('--margin-bottom', marginBottomPx);
-
-    localStorage.setItem('quote', quote);
-    localStorage.setItem('fontSize', fontSize);
-    localStorage.setItem('marginTop', marginTopPx);
-    localStorage.setItem('marginBottom', marginBottomPx);
-    localStorage.setItem('image', postType);
+    quoteText.style.color = fontColor;
     
     document.querySelector('.quotes-box').style.backgroundImage = 'url(' + backgroundImage + ')';
     const download = document.getElementById('download-image');
@@ -361,11 +449,12 @@ document.getElementById('font-size').addEventListener('input', saveToLocalStorag
 document.getElementById('margin-top').addEventListener('input', saveToLocalStorage);
 document.getElementById('margin-bottom').addEventListener('input', saveToLocalStorage);
 document.getElementById('post-type').addEventListener('input', saveToLocalStorage);
+document.getElementById('font-color').addEventListener('input', saveToLocalStorage);
 
  document.getElementById('post-type').addEventListener('change', function () {
         const postType = this.value;
         const previewImage = document.getElementById('preview-image');
-        const demoPreviewText = document.getElementById('demo-preview-text');
+        //const demoPreviewText = document.getElementById('demo-preview-text');
 
         if (postType === 'normal') {
             previewImage.src = '<?php echo $imageOptions['normal']['background']; ?>';
@@ -373,18 +462,24 @@ document.getElementById('post-type').addEventListener('input', saveToLocalStorag
             previewImage.src = '<?php echo $imageOptions['love']['background']; ?>';
         } else if (postType === 'tamilsms') {
             previewImage.src = '<?php echo $imageOptions['tamilsms']['background']; ?>';
+        } else if (postType === 'tamilsmsone') {
+            previewImage.src = '<?php echo $imageOptions['tamilsmsone']['background']; ?>';
+        } else if (postType === 'yellow') {
+            previewImage.src = '<?php echo $imageOptions['yellow']['background']; ?>';
+        } else if (postType === 'mercury') {
+            previewImage.src = '<?php echo $imageOptions['mercury']['background']; ?>';
         }
 
-        if (postType === 'normal') {
-            demoPreviewText.innerText = 'Normal Post Preview';
-        } else if (postType === 'love') {
-            demoPreviewText.innerText = 'Love Post Preview';
-        } else if (postType === 'tamilsms') {
-            demoPreviewText.innerText = 'Tamil SMS Preview';
-        }
+        //if (postType === 'normal') {
+        //    demoPreviewText.innerText = 'Normal Post Preview';
+        //} else if (postType === 'love') {
+        //    demoPreviewText.innerText = 'Love Post Preview';
+       // } else if (postType === 'tamilsms') {
+       //     demoPreviewText.innerText = 'Tamil SMS Preview';
+       // }
 
         previewImage.style.display = 'block';
-        demoPreviewText.style.display = 'block';
+       // demoPreviewText.style.display = 'block';
         const download = document.getElementById('download-image');
         download.style.display = 'none';
         const canvasOutput = document.getElementById('canvas-output');
@@ -395,12 +490,14 @@ document.getElementById('post-type').addEventListener('input', saveToLocalStorag
 function saveToLocalStorage() {
     const quote = document.getElementById('quote').value;
     const fontSize = document.getElementById('font-size').value;
+    const fontcolor = document.getElementById('font-color').value;
     const marginTop = document.getElementById('margin-top').value;
     const marginBottom = document.getElementById('margin-bottom').value;
     const postType = document.getElementById('post-type').value;
 
     localStorage.setItem('quote', quote);
     localStorage.setItem('fontSize', fontSize);
+    localStorage.setItem('fontcolor',  fontcolor);
     localStorage.setItem('marginTop', marginTop);
     localStorage.setItem('marginBottom', marginBottom);
     localStorage.setItem('image', postType);
@@ -409,12 +506,14 @@ function saveToLocalStorage() {
 function restoreFromLocalStorage() {
     const quote = localStorage.getItem('quote');
     const fontSize = localStorage.getItem('fontSize');
+    const fontColor = localStorage.getItem('fontcolor');
     const marginTop = localStorage.getItem('marginTop');
     const marginBottom = localStorage.getItem('marginBottom');
     const postType = localStorage.getItem('image');
 
     if (quote) document.getElementById('quote').value = quote;
     if (fontSize) document.getElementById('font-size').value = fontSize;
+    if (fontColor) document.getElementById('font-color').value = fontColor;
     if (postType) document.getElementById('post-type').value = postType;
     if (marginTop) document.getElementById('margin-top').value = parseInt(marginTop, 10);
     if (marginBottom) document.getElementById('margin-bottom').value = parseInt(marginBottom, 10);
