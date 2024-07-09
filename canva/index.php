@@ -49,6 +49,14 @@ $imageOptions = [
     'mercury' => [
         'background' => '/canva/mercury.png',
         'alt' => 'Mercury'
+    ],
+    'blogone' => [
+        'background' => '/canva/tamilsms-blog-one.jpg',
+        'alt' => 'Blog one'
+    ],
+    'blogtwo' => [
+        'background' => '/canva/tamilsms-blog-two.jpg',
+        'alt' => 'Blog Two'
     ]
 ];
 
@@ -314,6 +322,8 @@ $imageOptions = [
                 <option value="tamilsmsone">Tamil SMS One</option>
                 <option value="yellow">Yellow</option>
                 <option value="mercury">Mercury</option>
+                <option value="blogone">Blog One</option>
+                <option value="blogtwo">Blog Two</option>
             </select>
            </div>
          </div>
@@ -380,6 +390,7 @@ $imageOptions = [
         '#F2E3B6',
         '#000000',
         '#264653',
+        '#114646',
         '#E9D5FF',
         '#f4a261',
         '#dfe6e9',
@@ -412,6 +423,10 @@ function updateQuote(event) {
         backgroundImage = '<?php echo $imageOptions['yellow']['background']; ?>';
     } else if (postType === 'mercury') {
         backgroundImage = '<?php echo $imageOptions['mercury']['background']; ?>';
+    } else if (postType === 'blogone') {
+        backgroundImage = '<?php echo $imageOptions['blogone']['background']; ?>';
+    } else if (postType === 'blogtwo') {
+        backgroundImage = '<?php echo $imageOptions['blogtwo']['background']; ?>';
     } else {
         backgroundImage = '<?php echo $imageOptions['normal']['background']; ?>';
     }
@@ -468,6 +483,10 @@ document.getElementById('font-color').addEventListener('input', saveToLocalStora
             previewImage.src = '<?php echo $imageOptions['yellow']['background']; ?>';
         } else if (postType === 'mercury') {
             previewImage.src = '<?php echo $imageOptions['mercury']['background']; ?>';
+        } else if (postType === 'blogone') {
+            previewImage.src = '<?php echo $imageOptions['blogone']['background']; ?>';
+        } else if (postType === 'blogtwo') {
+            previewImage.src = '<?php echo $imageOptions['blogtwo']['background']; ?>';
         }
 
         //if (postType === 'normal') {
